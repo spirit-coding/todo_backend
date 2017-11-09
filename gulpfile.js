@@ -12,7 +12,7 @@ gulp.task('backendSrc', function () {
 });
 
 gulp.task('serverAssets', function () {
-    return gulp.src(['./server/**/*.json',]).pipe(gulp.dest('./dist/server'));
+    return gulp.src(['./server/**/*.json','package.json']).pipe(gulp.dest('./dist/server'));
 });
 
 gulp.task('watch', function () {
