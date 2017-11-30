@@ -59,7 +59,7 @@ export class ToDoRouter {
             else {
                 if(!todo.completed && updateToDo.completed)
                 {
-                    updateToDo.completedBy = new Date();
+                    updateToDo.completedDate = new Date();
                 }
 
                 Todo.findByIdAndUpdate(id, req.body, { new: true }, (err, updatedTodo: IMongooseTodo) => {
