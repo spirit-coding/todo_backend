@@ -20,6 +20,9 @@ export class ToDoRouter {
     }
 
     public createToDo(req: express.Request, res: express.Response, next: express.NextFunction) {
+        let toDo = req.body;
+        toDo.createdDate = new Date();
+
         Todo.create(req.body, (err, createdTodo: IMongooseTodo) => {
             if (err) {
                 res.status(500);
@@ -44,40 +47,57 @@ export class ToDoRouter {
         });
     }
 
-    public updateToDo(req: express.Request, res: express.Response, next: express.NextFunction) {
+    public updateToDo(req: express.Request, res: express.Response, next: express.NextFunction) {     
         let id = req.params.id;
-        Todo.findByIdAndUpdate(id, req.body, { new: true }, (err, updatedTodo: IMongooseTodo) => {
+        let updateToDo = req.body;
+        
+        Todo.findById(id, (err, todo: IMongooseTodo) => {
             if (err) {
                 res.status(500);
                 res.json(err);
             }
             else {
-                res.json(updatedTodo);
+                if(!todo.completed && updateToDo.completed)
+                {
+                    updateToDo.completedBy = new Date();
+                }
+
+                Todo.findByIdAndUpdate(id, req.body, { new: true }, (err, updatedTodo: IMongooseTodo) => {
+                    if (err) {
+                        res.status(500);
+                        res.json(err);
+                    }
+                    else {
+                        res.json(updatedTodo);
+                    }
+                });
             }
         });
+        
+       
     }
 
     public getToDo(req: express.Request, res: express.Response, next: express.NextFunction) {
         let id = req.params.id;
-        Todo.findById(id, (err, updatedTodo: IMongooseTodo) => {
+        Todo.findById(id, (err, todo: IMongooseTodo) => {
             if (err) {
                 res.status(500);
                 res.json(err);
             }
             else {
-                res.json(updatedTodo);
+                res.json(todo);
             }
         });
     }
 
     public getToDos(req: express.Request, res: express.Response, next: express.NextFunction) {
-        Todo.find({}, (err, updatedTodo: IMongooseTodo) => {
+        Todo.find({}, (err, todos: IMongooseTodo) => {
             if (err) {
                 res.status(500);
                 res.json(err);
             }
             else {
-                res.json(updatedTodo);
+                res.json(todos);
             }
         });
     }

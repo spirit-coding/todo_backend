@@ -8,6 +8,7 @@ import * as expresswinston from 'express-winston';
 import { ToDoRouter } from './routes/todo.router';
 import { MongooseConnection } from './config/mongoose.conf';
 import { LogConfig } from './config/log-config';
+var cors = require('cors')
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -17,7 +18,7 @@ class App {
 
     //Run configuration methods on the Express instance.
     constructor() {
-        new LogConfig('D:/workshop/log');
+        new LogConfig('c:/workshop/log/');
 
         new MongooseConnection(mongoose);
 
@@ -33,6 +34,7 @@ class App {
 
     // Configure Express middleware.
     private middleware(): void {
+        this.express.use(cors());
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: false }));
     }

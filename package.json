@@ -8,6 +8,7 @@
   "private": true,
   "dependencies": {
     "body-parser": "^1.17.1",
+    "cors": "^2.8.4",
     "express": "^4.15.3",
     "express-winston": "^2.4.0",
     "gulp": "^3.9.1",

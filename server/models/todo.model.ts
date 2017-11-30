@@ -5,7 +5,10 @@ export let ObjectId = mongoose.Schema.Types.ObjectId;
 
 export interface ITodo {
     title: string;
-    complete: boolean;
+    completed: boolean;
+    createdDate: Date;
+    completedDate: Date;
+    doneBy: Date;
 }
 
 export interface IMongooseTodo extends mongoose.Document, ITodo {}
@@ -15,9 +18,21 @@ export const TodoSchema = new Schema({
         type: String,
         required: true
     },
-    complete: {
+    completed: {
         type: Boolean,
         required: true
+    },
+    createdDate: {
+        type: Date,
+        required: true
+    },
+    completedDate: {
+        type: Date,
+        required: false
+    },
+    doneBy: {
+        type: Date,
+        required: false
     }
 });
 
