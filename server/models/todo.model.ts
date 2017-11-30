@@ -8,7 +8,7 @@ export interface ITodo {
     completed: boolean;
     createdDate: Date;
     completedDate: Date;
-    doneBy: Date;
+    description: string;
 }
 
 export interface IMongooseTodo extends mongoose.Document, ITodo {}
@@ -30,9 +30,9 @@ export const TodoSchema = new Schema({
         type: Date,
         required: false
     },
-    doneBy: {
-        type: Date,
-        required: false
+    description: {
+        type: String,
+        required: true
     }
 });
 
