@@ -12,6 +12,8 @@ export class ToDoRouter {
     }
 
     init() {
+        this.router.get('/completed', (request: express.Request, response: express.Response, next: express.NextFunction) => this.getCompletedToDos(request, response, next));
+        this.router.get('/uncompleted', (request: express.Request, response: express.Response, next: express.NextFunction) => this.getUncompletedToDos(request, response, next));
         this.router.get('/:id', (request: express.Request, response: express.Response, next: express.NextFunction) => this.getToDo(request, response, next));
         this.router.put('/:id', (request: express.Request, response: express.Response, next: express.NextFunction) => this.updateToDo(request, response, next));
         this.router.get('/', (request: express.Request, response: express.Response, next: express.NextFunction) => this.getToDos(request, response, next));
@@ -56,6 +58,10 @@ export class ToDoRouter {
                 res.status(500);
                 res.json(err);
             }
+            else if(!todo){
+                res.status(404);
+                res.json();
+            }
             else {
                 if(!todo.completed && updateToDo.completed)
                 {
@@ -86,6 +92,30 @@ export class ToDoRouter {
             }
             else {
                 res.json(todo);
+            }
+        });
+    }
+
+    public getCompletedToDos(req: express.Request, res: express.Response, next: express.NextFunction) {
+        Todo.find({ completed : true}, (err, todos: IMongooseTodo) => {
+            if (err) {
+                res.status(500);
+                res.json(err);
+            }
+            else {
+                res.json(todos);
+            }
+        });
+    }
+
+    public getUncompletedToDos(req: express.Request, res: express.Response, next: express.NextFunction) {
+        Todo.find({ completed : false}, (err, todos: IMongooseTodo) => {
+            if (err) {
+                res.status(500);
+                res.json(err);
+            }
+            else {
+                res.json(todos);
             }
         });
     }
